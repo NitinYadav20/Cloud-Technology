@@ -1,0 +1,10 @@
+A = LOAD ‘Query2.csv’ USING PigStorage(‘,’) AS (OwnerUserId:int , Score:int);
+DUMP A;
+B = GROUP A BY OwnerUserId;
+DUMP B;
+C = FOREACH B GENERATE group, SUM(A.Score) AS TOTALSCORE;
+DUMP C;
+D = ORDER C BY TOTALSCORE DESC;
+DUMP D;
+E = LIMIT D 11;
+DUMP E;
