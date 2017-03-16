@@ -1,0 +1,10 @@
+A = LOAD ‘Query3.csv’ USING PigStorage(‘,’) AS (OwnerUserId:int , Body:chararray);
+DUMP A;
+B = FOREACH A GENERATE FLATTEN(TOKENIZE((chararray)$1)) AS WORD, OwnerUserId;
+DUMP B;
+C = FILTER B BY WORD MATCHES '\\hadoop+' OR WORD MATCHES '\\Hadoop+' OR WORD MATCHES '\\ApacheHadoop+' OR WORD MATCHES '\\HADOOP+' OR WORD MATCHES '\\APACHEHADOOP+' OR WORD MATCHES ‘\\apache hadoop+’ OR WORD MATCHES ‘\\Hadoop Apache+’;
+DUMP C;
+D = group C by OwnerUserId;
+DUMP D;
+E = foreach D generate COUNT(C), C.WORD, group;
+DUMP E;
